@@ -10,7 +10,8 @@ import processing.core.PImage;
  * @author 343089579
  */
 public class Character {
-    private int x, y;
+    public int x, y;
+    public int height, width;
     private PApplet app;
     private PImage image;
     
@@ -19,6 +20,8 @@ public class Character {
         this.x = x;
         this.y = y;
         this.image = app.loadImage(img);
+        this.width = image.width;
+        this.height = image.height;
     }
     
     public void move(int dx, int dy){

@@ -15,5 +15,6 @@ public class Sun extends Character{
     public Sun(PApplet p, int x, int y,int Hp ,String img) {
         super(p, x, y, img);
         this.Hp = Hp;
+        
     }
 }
