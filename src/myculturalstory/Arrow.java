@@ -10,18 +10,17 @@ import processing.core.PImage;
  * @author 343089579
  */
 public class Arrow {
-    private int x, y;
-    private int speed, dmg;
+    public int x, y;
+    private int speed;
     private int height, width;
     private PApplet app;
     private PImage image;
     
-    public Arrow(PApplet p, int x, int y, int speed, int dmg, String img){
+    public Arrow(PApplet p, int x, int y, int speed, String img){
         this.app = p;
         this.x = x;
         this.y = y;
         this.speed = speed;
-        this.dmg = dmg;
         this.image = app.loadImage(img);
         this.width = image.width;
         this.height = image.height;
