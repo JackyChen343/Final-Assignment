@@ -17,4 +17,6 @@ public class Sun extends Character{
         this.Hp = Hp;
         
     }
+    
+    
 }

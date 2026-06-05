@@ -11,9 +11,11 @@ import processing.core.PImage;
  */
 public class Main extends PApplet {
     private Character Archer;
+    private Sun sun;
     private Arrow arrow;
     private PImage bg;
     private int stage = 0;
+    private int speed = 10;
     private int walk = 0; 
     public void settings(){
 	   //sets the size of the window
@@ -25,6 +27,7 @@ public class Main extends PApplet {
         background(255,255,255);
         textSize(20);
         bg =  loadImage("images/flatlands.jpg");
+        sun = new Sun(this, 450, 20, 1, "images/sun.png");
         Archer = new Character(this, 50, 750, "images/BowGuy.png");
         arrow = new Arrow(this, 9999, 9999, 10, "images/Arrow.png");
     }
@@ -37,7 +40,10 @@ public class Main extends PApplet {
             text("Press Enter Key to Start", 20, 100);
         } else if (stage == 1){
             image(bg, 0, 0, width, height);
+            sun.draw();
             Archer.draw();
+            
+   
         }
         arrow.draw();
         arrow.arrowMovement();
@@ -57,6 +63,12 @@ public class Main extends PApplet {
                     }
                 }
             }
+        if (arrow.isCollidingWith(sun)){
+            sun.x = -9999;
+            sun.y = -9999;
+            arrow.x = 9999;
+            arrow.y = 9999;
+        }
     }
     
     public void keyPressed(){
