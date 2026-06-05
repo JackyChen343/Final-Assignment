@@ -16,6 +16,7 @@ public class Main extends PApplet {
     private PImage bg;
     private int stage = 0;
     private int speed = 10;
+    private int count = 1;
     private int walk = 0; 
     public void settings(){
 	   //sets the size of the window
@@ -58,11 +59,17 @@ public class Main extends PApplet {
                     } else if (keyCode == DOWN){
                         Archer.move(0, 5);
                     } else if (key == ' '){
-                        arrow.x = Archer.x+5;
-                        arrow.y = Archer.y;
+                        if(count == 1){
+                            arrow.x = Archer.x+5;
+                            arrow.y = Archer.y;
+                            count = 0;
+                        }
                     }
                 }
             }
+        if(arrow.x>900){
+            count = 1;
+        }
         if (arrow.isCollidingWith(sun)){
             sun.x = -9999;
             sun.y = -9999;
