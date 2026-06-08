@@ -28,6 +28,19 @@ public class Character {
         x += dx;
         y += dy;
     }
+
+    public boolean isCollidingWith(Character other) {
+        // Check if the bounding boxes of the two persons intersect
+        boolean isLeftOfOtherRight = x < other.x + other.width;
+        boolean isRightOfOtherLeft = x + width > other.x;
+        boolean isAboveOtherBottom = y < other.y + other.height;
+        boolean isBelowOtherTop = y + height > other.y;
+
+        return isLeftOfOtherRight && isRightOfOtherLeft 
+        && isAboveOtherBottom && isBelowOtherTop;
+
+    }
+
     
     public void draw(){
         app.image(image, x, y);

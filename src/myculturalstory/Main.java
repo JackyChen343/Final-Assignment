@@ -13,6 +13,7 @@ public class Main extends PApplet {
     private Character Archer;
     private Sun sun;
     private Arrow arrow;
+    private PImage dialog1;
     private PImage bg;
     private int stage = 0;
     private int speed = 10;
@@ -31,6 +32,7 @@ public class Main extends PApplet {
         sun = new Sun(this, 450, 20, 1, "images/sun.png");
         Archer = new Character(this, 50, 750, "images/BowGuy.png");
         arrow = new Arrow(this, 9999, 9999, 10, "images/Arrow.png");
+        dialog1 = loadImage("images/Box1.png");
     }
     
     public void draw(){
@@ -51,13 +53,13 @@ public class Main extends PApplet {
         if (walk==1){
                 if(keyPressed){
                     if (keyCode == LEFT){
-                        Archer.move(-5, 0);
+                        Archer.move(-10, 0);
                     } else if (keyCode == RIGHT){
-                        Archer.move(5, 0);
+                        Archer.move(10, 0);
                     } else if (keyCode == UP){
-                        Archer.move(0, -5);
+                        Archer.move(0, -10);
                     } else if (keyCode == DOWN){
-                        Archer.move(0, 5);
+                        Archer.move(0, 10);
                     } else if (key == ' '){
                         if(count == 1){
                             arrow.x = Archer.x+5;
@@ -70,6 +72,10 @@ public class Main extends PApplet {
         if(arrow.x>900){
             count = 1;
         }
+        if(Archer.isCollidingWith(sun)){
+            image(dialog1, 0, 500);
+        }
+        
         if (arrow.isCollidingWith(sun)){
             sun.x = -9999;
             sun.y = -9999;
