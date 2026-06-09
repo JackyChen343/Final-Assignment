@@ -3,8 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package myculturalstory;
+import java.io.File;
 import processing.core.PApplet;
 import processing.core.PImage;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.util.Scanner;
 /**
  *
  * @author 343089579
@@ -18,7 +23,11 @@ public class Main extends PApplet {
     private int stage = 0;
     private int speed = 10;
     private int count = 1;
-    private int walk = 0; 
+    private int walk = 0;
+    private int Num = 0;
+    String[] PersonName = new String[100];
+    String[] Text = new String[100];
+    
     public void settings(){
 	   //sets the size of the window
         size (900,900);
@@ -32,7 +41,21 @@ public class Main extends PApplet {
         sun = new Sun(this, 450, 20, 1, "images/sun.png");
         Archer = new Character(this, 50, 750, "images/BowGuy.png");
         arrow = new Arrow(this, 9999, 9999, 10, "images/Arrow.png");
-        dialog1 = loadImage("images/Box1.png");
+        dialog1 = loadImage("images/dialog.png");
+        try{
+            Scanner x = new Scanner( new File("dialog.txt"));
+            while(x.hasNext()){
+                String output = x.nextLine();
+                String[] info = output.split(",");
+            
+                PersonName[Num] = info[0].trim();
+                Text[Num] = info[1].trim();
+                Num++;
+            }
+        x.close();
+        }catch( IOException ioException ){
+            System.err.println("Java Exception: "+ ioException);
+        }
     }
     
     public void draw(){
@@ -45,6 +68,7 @@ public class Main extends PApplet {
             image(bg, 0, 0, width, height);
             sun.draw();
             Archer.draw();
+            
             
    
         }
@@ -74,6 +98,8 @@ public class Main extends PApplet {
         }
         if(Archer.isCollidingWith(sun)){
             image(dialog1, 0, 500);
+            text(PersonName[0], 100, 645);
+            text(Text[0], 125, 680);
         }
         
         if (arrow.isCollidingWith(sun)){
