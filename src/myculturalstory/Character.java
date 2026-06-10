@@ -40,6 +40,24 @@ public class Character {
         && isAboveOtherBottom && isBelowOtherTop;
 
     }
+    
+        public boolean isClicked(int mouseX, int mouseY) {
+        /*calculates distance from mouse click at mouseX and mouseY to center 
+        * of image since (x,y) of image is postioned at the top left corner  
+        * we use x+(image.pixelWidth/2), y+(image.pixelHeight/2)) to get center*/
+        int centerX = x+(image.pixelWidth/2);
+        int centerY = y+(image.pixelHeight/2);        
+        float d = PApplet.dist(mouseX, mouseY, centerX ,centerY );
+    
+        //gives us the dimensions of the image 32px by 32px
+        System.out.println("image height"+image.pixelHeight);
+        System.out.println("image width"+image.pixelWidth);
+    
+        // returns true if  mouse clicked is within 16px from the center of image
+        // we use 16px because the image is 32px by 32px
+        return d < 16; 
+    }
+
 
     
     public void draw(){

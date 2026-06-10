@@ -16,15 +16,19 @@ import java.util.Scanner;
  */
 public class Main extends PApplet {
     private Character Archer;
+    private Character NPC1;
+    private Character Button;
     private Sun sun;
     private Arrow arrow;
+    private PImage next;
     private PImage dialog1;
     private PImage bg;
     private int stage = 0;
-    private int speed = 10;
+    //private int speed = 10;
     private int count = 1;
     private int walk = 0;
     private int Num = 0;
+    private int DN = 0;
     String[] PersonName = new String[100];
     String[] Text = new String[100];
     
@@ -34,14 +38,16 @@ public class Main extends PApplet {
     }
     
     public void setup(){
-	   //sets the background colour using R,G,B (https://rgbcolorpicker.com/)
+	//sets the background colour using R,G,B (https://rgbcolorpicker.com/)
         background(255,255,255);
         textSize(20);
         bg =  loadImage("images/flatlands.jpg");
         sun = new Sun(this, 450, 20, 1, "images/sun.png");
         Archer = new Character(this, 50, 750, "images/BowGuy.png");
+        NPC1 = new Character(this, 750, 450, "images/homeless.png");
         arrow = new Arrow(this, 9999, 9999, 10, "images/Arrow.png");
         dialog1 = loadImage("images/dialog.png");
+        Button = new Character(this, 745, 825, "images/f1.png");
         try{
             Scanner x = new Scanner( new File("dialog.txt"));
             while(x.hasNext()){
@@ -66,10 +72,9 @@ public class Main extends PApplet {
             text("Press Enter Key to Start", 20, 100);
         } else if (stage == 1){
             image(bg, 0, 0, width, height);
-            sun.draw();
-            Archer.draw();
-            
-            
+            //sun.draw();
+            NPC1.draw();
+            Archer.draw();   
    
         }
         arrow.draw();
@@ -96,10 +101,11 @@ public class Main extends PApplet {
         if(arrow.x>900){
             count = 1;
         }
-        if(Archer.isCollidingWith(sun)){
+        if(Archer.isCollidingWith(NPC1)){
             image(dialog1, 0, 500);
-            text(PersonName[0], 100, 645);
-            text(Text[0], 125, 680);
+            Button.draw();
+            text(PersonName[DN], 100, 645);
+            text(Text[DN], 125, 680);
         }
         
         if (arrow.isCollidingWith(sun)){
@@ -118,6 +124,11 @@ public class Main extends PApplet {
             }
         }
     }
-    
+    public void mousePressed(){
+        if(Button.isClicked(mouseX, mouseY)){
+            DN += 1;
+            
+        }
+    }
 }
 

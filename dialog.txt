@@ -1,5 +1,6 @@
-Person1, Sun bad
+Homeless Man, WOW
 Person2, here
 Person3, what
 Person4, wow
 Person5, bob is my uncle
+Person6, it works
