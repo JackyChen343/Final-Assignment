@@ -12,9 +12,19 @@ import processing.core.PImage;
 public class Character {
     public int x, y;
     public int height, width;
+    public int Hp;
     private PApplet app;
     private PImage image;
     
+    public Character(PApplet p, int x, int y,int Hp, String img){
+        this.app = p;
+        this.x = x;
+        this.y = y;
+        this.Hp = Hp;
+        this.image = app.loadImage(img);
+        this.width = image.width;
+        this.height = image.height;
+    }
     public Character(PApplet p, int x, int y, String img){
         this.app = p;
         this.x = x;

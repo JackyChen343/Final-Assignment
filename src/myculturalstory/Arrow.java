@@ -30,6 +30,10 @@ public class Arrow {
         x += speed;
     }
     
+    public void arrowMovement(int dy){
+        y += dy;
+    }
+    
     public boolean isCollidingWith(Sun other) {
         // Check if the bounding boxes of the two persons intersect
         boolean isLeftOfOtherRight = x < other.x + other.width;

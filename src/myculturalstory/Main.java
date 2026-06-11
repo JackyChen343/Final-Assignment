@@ -20,12 +20,16 @@ public class Main extends PApplet {
     private Character Button;
     private Sun sun;
     private Arrow arrow;
+    private Arrow arrowUp;
     private PImage next;
     private PImage dialog1;
+    private PImage death;
     private PImage bg;
+    private PImage bg2;
     private int stage = 0;
-    //private int speed = 10;
+    private int Action = 0;
     private int count = 1;
+    private int arrowType = 0;
     private int walk = 0;
     private int Num = 0;
     private int DN = 0;
@@ -41,11 +45,14 @@ public class Main extends PApplet {
 	//sets the background colour using R,G,B (https://rgbcolorpicker.com/)
         background(255,255,255);
         textSize(20);
+        death = loadImage("images/death.jpg");
         bg =  loadImage("images/flatlands.jpg");
-        sun = new Sun(this, 450, 20, 1, "images/sun.png");
-        Archer = new Character(this, 50, 750, "images/BowGuy.png");
+        bg2 = loadImage("images/bg2.jpg");
+        sun = new Sun(this, 450, 20, 5, -50, "images/sun.png");
+        Archer = new Character(this, 50, 750, 5, "images/BowGuy.png");
         NPC1 = new Character(this, 750, 450, "images/homeless.png");
         arrow = new Arrow(this, 9999, 9999, 10, "images/Arrow.png");
+        arrowUp = new Arrow(this, 9999, 9999, 10, "images/UpArrow.png");
         dialog1 = loadImage("images/dialog.png");
         Button = new Character(this, 745, 825, "images/f1.png");
         try{
@@ -72,47 +79,89 @@ public class Main extends PApplet {
             text("Press Enter Key to Start", 20, 100);
         } else if (stage == 1){
             image(bg, 0, 0, width, height);
-            //sun.draw();
             NPC1.draw();
-            Archer.draw();   
-   
+            Archer.draw(); 
+            if(Archer.isCollidingWith(NPC1)){
+                image(dialog1, 0, 500);
+                Button.draw();
+                text(PersonName[DN], 100, 645);
+                text(Text[DN], 125, 680);
+                if(DN == 5){
+                    Action = 1;
+                }
+            }
+        } else if (stage == 2){
+            image(bg2, 0, 0, width, height);
+            Archer.draw();
+            sun.draw();
+            sun.move(sun.getSpeed(), 0);
+            if(sun.x < 0){
+                sun.x = 900;
+                sun.y = Archer.y-10;
+            }
+        } else if (stage == -9999){
+            image(death, 0, 0, width, height);
         }
         arrow.draw();
+        arrowUp.draw();
+        arrowUp.arrowMovement(-10);
         arrow.arrowMovement();
         if (walk==1){
                 if(keyPressed){
                     if (keyCode == LEFT){
-                        Archer.move(-10, 0);
+                        Archer.move(-20, 0);
                     } else if (keyCode == RIGHT){
-                        Archer.move(10, 0);
+                        Archer.move(20, 0);
                     } else if (keyCode == UP){
-                        Archer.move(0, -10);
+                        Archer.move(0, -20);
                     } else if (keyCode == DOWN){
-                        Archer.move(0, 10);
+                        Archer.move(0, 20);
                     } else if (key == ' '){
                         if(count == 1){
-                            arrow.x = Archer.x+5;
-                            arrow.y = Archer.y;
-                            count = 0;
+                            if(arrowType == 0){
+                                arrow.x = Archer.x+5;
+                                arrow.y = Archer.y;
+                                count = 0;
+                            }else if (arrowType == 1){
+                                arrowUp.x = Archer.x;
+                                arrowUp.y = Archer.y;
+                                count = 0;
+                            }
                         }
-                    }
+                    } else if (key == 'q'){
+                        if(arrowType == 0){
+                            arrowType = 1; 
+                        } else if(arrowType == 1){
+                            arrowType = 0;
                 }
             }
-        if(arrow.x>900){
+                }
+            }
+        if(arrow.y==-9999 || arrow.x > 900){
             count = 1;
         }
-        if(Archer.isCollidingWith(NPC1)){
-            image(dialog1, 0, 500);
-            Button.draw();
-            text(PersonName[DN], 100, 645);
-            text(Text[DN], 125, 680);
+        if (Archer.x >= 900 && Action == 1){
+            stage = 2;
+            Archer.x = 50;
+            Action = 2;
+        }
+        if (arrow.isCollidingWith(sun)){
+            sun.Hp -= 1;
+            arrow.x = -9999;
+            arrow.y = -9999;
+        }
+        if (sun.isCollidingWith(Archer)){
+            Archer.Hp -=1;
+            sun.x = 900;
+            sun.y = 450;
         }
         
-        if (arrow.isCollidingWith(sun)){
-            sun.x = -9999;
-            sun.y = -9999;
-            arrow.x = 9999;
-            arrow.y = 9999;
+        if (sun.Hp == 0){
+            sun.x = 9999;
+            sun.y = 9999;
+        }
+        if(Archer.Hp == 0){
+            stage = -9999;
         }
     }
     
@@ -126,7 +175,11 @@ public class Main extends PApplet {
     }
     public void mousePressed(){
         if(Button.isClicked(mouseX, mouseY)){
-            DN += 1;
+            if(stage == 1 && DN < 5){
+                DN += 1;
+            } else{
+                DN +=0;
+            }
             
         }
     }
