@@ -26,6 +26,7 @@ public class Main extends PApplet {
     private PImage death;
     private PImage bg;
     private PImage bg2;
+    private PImage bg3;
     private int stage = 0;
     private int Action = 0;
     private int count = 1;
@@ -33,8 +34,8 @@ public class Main extends PApplet {
     private int walk = 0;
     private int Num = 0;
     private int DN = 0;
-    String[] PersonName = new String[100];
-    String[] Text = new String[100];
+    String [] PersonName = new String[1000];
+    String [] Text = new String[1000];
     
     public void settings(){
 	   //sets the size of the window
@@ -48,7 +49,8 @@ public class Main extends PApplet {
         death = loadImage("images/death.jpg");
         bg =  loadImage("images/flatlands.jpg");
         bg2 = loadImage("images/bg2.jpg");
-        sun = new Sun(this, 450, 20, 5, -50, "images/sun.png");
+        bg3 = loadImage("images/VillageFire.jpg");
+        sun = new Sun(this, 450, 20, 5, -25, "images/sun.png");
         Archer = new Character(this, 50, 750, 5, "images/BowGuy.png");
         NPC1 = new Character(this, 750, 450, "images/homeless.png");
         arrow = new Arrow(this, 9999, 9999, 10, "images/Arrow.png");
@@ -92,6 +94,8 @@ public class Main extends PApplet {
             }
         } else if (stage == 2){
             image(bg2, 0, 0, width, height);
+            NPC1.draw();
+            NPC1.y = 9999;
             Archer.draw();
             sun.draw();
             sun.move(sun.getSpeed(), 0);
@@ -99,6 +103,22 @@ public class Main extends PApplet {
                 sun.x = 900;
                 sun.y = Archer.y-10;
             }
+            if(sun.Hp == 0){
+                NPC1.x = 750;
+                NPC1.y = 450;
+            }
+            if(Archer.isCollidingWith(NPC1)){
+                image(dialog1, 0, 500);
+                Button.draw();
+                text(PersonName[DN], 100, 645);
+                text(Text[DN], 125, 680);
+                if (DN == 9){
+                    Action = 3;
+                }
+            }
+        } else if(stage == 3){
+            image(bg3, 0, 0, width, height);
+            Archer.draw();
         } else if (stage == -9999){
             image(death, 0, 0, width, height);
         }
@@ -142,13 +162,25 @@ public class Main extends PApplet {
         }
         if (Archer.x >= 900 && Action == 1){
             stage = 2;
+            DN = 6;
             Archer.x = 50;
             Action = 2;
+        }
+        if (Archer.y <= 0 && Action == 3){
+            stage = 3;
+            DN = 9;
+            Archer.y = 850;
+            Action = 4;
         }
         if (arrow.isCollidingWith(sun)){
             sun.Hp -= 1;
             arrow.x = -9999;
             arrow.y = -9999;
+        }
+        if(arrowUp.isCollidingWith(sun)){
+            sun.Hp -= 1;
+            arrowUp.x = -9999;
+            arrowUp.y = -9999;
         }
         if (sun.isCollidingWith(Archer)){
             Archer.Hp -=1;
@@ -159,9 +191,19 @@ public class Main extends PApplet {
         if (sun.Hp == 0){
             sun.x = 9999;
             sun.y = 9999;
+            Action = 3;
         }
         if(Archer.Hp == 0){
             stage = -9999;
+        }
+        if(stage > 0){
+            if(arrowType == 0){
+                fill(0, 0, 255);
+                rect(0, 0, 25, 25);
+            } else if(arrowType == 1){
+                fill(255, 0, 0);
+                rect(0, 0, 25, 25);
+            }
         }
     }
     
@@ -177,8 +219,10 @@ public class Main extends PApplet {
         if(Button.isClicked(mouseX, mouseY)){
             if(stage == 1 && DN < 5){
                 DN += 1;
+            }else if(stage == 2 && DN < 8){
+                DN +=1;
             } else{
-                DN +=0;
+                DN += 0;
             }
             
         }
